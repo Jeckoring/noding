@@ -3,6 +3,7 @@ const MemberShip = require("../models/MemberShip");
 // Create a new MemberShip
 exports.createMemberShip = async (req, res) => {
   const { fullname, from, to, price } = req.body;
+  const memberId = req.headers.member_id;
 
   // Create a new MemberShip
   const newMemberShip = new MemberShip({
@@ -10,7 +11,7 @@ exports.createMemberShip = async (req, res) => {
     from,
     to,
     price,
-    member_id: req.member_id,
+    member_id: memberId,
   });
 
   // Save MemberShip in the database
@@ -32,7 +33,7 @@ exports.createMemberShip = async (req, res) => {
 
 // Get all MemberShips
 exports.getAllMemberships = async (req, res) => {
-  const memberships = await MemberShip.find(req.member_id).exec();
+  const memberships = await MemberShip.find(memberId).exec();
   if (!memberships) {
     return res.status(400).send({
       message: "Memberships were not found",
